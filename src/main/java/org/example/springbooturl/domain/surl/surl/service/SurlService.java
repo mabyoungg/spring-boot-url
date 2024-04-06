@@ -6,6 +6,8 @@ import org.example.springbooturl.domain.surl.surl.entity.Surl;
 import org.example.springbooturl.domain.surl.surl.repository.SurlRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,5 +29,9 @@ public class SurlService {
         surlRepository.save(surl);
 
         return surl;
+    }
+
+    public Optional<Surl> findById(long id) {
+        return surlRepository.findById(id);
     }
 }
