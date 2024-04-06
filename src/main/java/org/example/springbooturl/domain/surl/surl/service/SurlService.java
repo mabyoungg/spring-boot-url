@@ -2,6 +2,7 @@ package org.example.springbooturl.domain.surl.surl.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.example.springbooturl.domain.member.member.entity.Member;
 import org.example.springbooturl.domain.surl.surl.entity.Surl;
 import org.example.springbooturl.domain.surl.surl.repository.SurlRepository;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,9 @@ public class SurlService {
     }
 
     @Transactional
-    public Surl create(String url, String title) {
+    public Surl create(Member author, String url, String title) {
         Surl surl = Surl.builder()
+                .author(author)
                 .url(url)
                 .title(title)
                 .build();

@@ -5,6 +5,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.example.springbooturl.domain.member.member.entity.Member;
+import org.example.springbooturl.domain.member.member.service.MemberService;
 import org.example.springbooturl.domain.surl.surl.service.SurlService;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ApiV1SurlController {
     private final SurlService surlService;
+    private final MemberService memberService;
 
     @Data
     public static class SurlCreateReqBody {
@@ -26,7 +29,8 @@ public class ApiV1SurlController {
     public void create(
             @Valid @RequestBody SurlCreateReqBody reqBody
     ) {
-        surlService.create(reqBody.url, reqBody.title);
+        Member author = memberService.findById(4L).get();
+        surlService.create(author, reqBody.url, reqBody.title);
     }
 
     @Data
