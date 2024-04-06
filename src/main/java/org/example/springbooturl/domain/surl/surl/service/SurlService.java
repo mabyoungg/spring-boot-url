@@ -1,10 +1,11 @@
 package org.example.springbooturl.domain.surl.surl.service;
 
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import org.example.springbooturl.domain.surl.surl.entity.Surl;
 import org.example.springbooturl.domain.surl.surl.repository.SurlRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class SurlService {
     }
 
     @Transactional
-    public Surl save(String url, String title) {
+    public Surl create(String url, String title) {
         Surl surl = Surl.builder()
                 .url(url)
                 .title(title)
