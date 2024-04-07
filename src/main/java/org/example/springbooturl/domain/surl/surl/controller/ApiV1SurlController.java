@@ -10,10 +10,9 @@ import org.example.springbooturl.domain.member.member.entity.Member;
 import org.example.springbooturl.domain.member.member.service.MemberService;
 import org.example.springbooturl.domain.surl.surl.service.SurlService;
 import org.example.springbooturl.global.security.SecurityUser;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/surls")
@@ -32,14 +31,15 @@ public class ApiV1SurlController {
     }
 
     @PostMapping("")
+    @PreAuthorize("isAuthenticated()")
     public void create(
             @Valid @RequestBody SurlCreateReqBody reqBody,
-            Principal principal
+            @AuthenticationPrincipal SecurityUser user
     ) {
-        SecurityUser user = principal == null ? null : (SecurityUser) ((Authentication) principal).getPrincipal();
+        Member authMember = memberService.findById(user.getId()).get();
         log.debug("user: {}", user);
 
-        Member author = memberService.findById(4L).get();
+        Member author = authMember;
         surlService.create(author, reqBody.url, reqBody.title);
     }
 
