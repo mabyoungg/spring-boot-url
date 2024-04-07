@@ -4,13 +4,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.springbooturl.domain.standard.util.ut.Ut;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
@@ -26,11 +28,24 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        String authorization = request.getHeader("Authorization");
+        authorization = authorization.substring("Bearer ".length());
+        String jsonStr = Ut.base64Decode(authorization);
+        Map map = Ut.json.toObj(jsonStr, Map.class);
+
+        long securityUserId = (long) ((int) map.get("id"));
+        String securityUserUsername = (String) map.get("username");
+        List<String> securityUserAuthorities = (List<String>) map.get("authorities");
+
+
         SecurityUser securityUser = new SecurityUser(
-                4,
-                "user1",
+                securityUserId,
+                securityUserUsername,
                 "",
-                new ArrayList<>()
+                securityUserAuthorities
+                        .stream()
+                        .map(authority -> new SimpleGrantedAuthority(authority))
+                        .toList()
         );
 
         SecurityContextHolder.getContext().setAuthentication(securityUser.genAuthentication());
