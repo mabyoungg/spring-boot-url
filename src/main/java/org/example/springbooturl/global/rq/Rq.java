@@ -1,9 +1,13 @@
 package org.example.springbooturl.global.rq;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.springbooturl.domain.member.member.entity.Member;
 import org.example.springbooturl.domain.member.member.service.MemberService;
+import org.example.springbooturl.global.app.AppConfig;
 import org.example.springbooturl.global.security.SecurityUser;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,6 +19,8 @@ import java.util.Optional;
 @RequestScope
 @RequiredArgsConstructor
 public class Rq {
+    private final HttpServletRequest req;
+    private final HttpServletResponse resp;
     private final MemberService memberService;
 
     // 캐시 데이터
@@ -52,5 +58,35 @@ public class Rq {
         if (isLogin == null) getSecurityUser();
 
         return isLogin;
+    }
+
+    public String getCurrentUrlPath() {
+        return req.getRequestURI();
+    }
+
+    public void setStatusCode(int statusCode) {
+        resp.setStatus(statusCode);
+    }
+
+    public void setCrossDomainCookie(String name, String value) {
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .domain(getSiteCookieDomain())
+                .sameSite("Strict")
+                .secure(true)
+                .httpOnly(true)
+                .build();
+
+        resp.addHeader("Set-Cookie", cookie.toString());
+    }
+
+    private String getSiteCookieDomain() {
+        String cookieDomain = AppConfig.getSiteCookieDomain();
+
+        if (!cookieDomain.equals("localhost")) {
+            return cookieDomain = "." + cookieDomain;
+        }
+
+        return null;
     }
 }
