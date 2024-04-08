@@ -4,18 +4,22 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.springbooturl.domain.standard.util.ut.Ut;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.RequiredArgsConstructor;
+import org.example.springbooturl.domain.member.member.service.MemberService;
+import org.example.springbooturl.global.rq.Rq;
+import org.example.springbooturl.global.rsData.RsData;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
+    private final MemberService memberService;
+    private final Rq rq;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (!request.getRequestURI().startsWith("/api/")) {
@@ -28,27 +32,42 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String authorization = request.getHeader("Authorization");
-        authorization = authorization.substring("Bearer ".length());
-        String jsonStr = Ut.base64Decode(authorization);
-        Map map = Ut.json.toObj(jsonStr, Map.class);
+        String bearerToken = rq.getHeader("Authorization", null);
 
-        long securityUserId = (long) ((int) map.get("id"));
-        String securityUserUsername = (String) map.get("username");
-        List<String> securityUserAuthorities = (List<String>) map.get("authorities");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            String tokensStr = bearerToken.substring("Bearer ".length());
+            String[] tokens = tokensStr.split(" ", 2);
+            String refreshToken = tokens[0];
+            String accessToken = tokens.length == 2 ? tokens[1] : "";
 
+            if (!accessToken.isBlank()) {
+                if (!memberService.validateToken(accessToken)) {
+                    RsData<String> rs = memberService.refreshAccessToken(refreshToken);
+                    accessToken = rs.getData();
+                    rq.setHeader("Authorization", "Bearer " + refreshToken + " " + accessToken);
+                }
 
-        SecurityUser securityUser = new SecurityUser(
-                securityUserId,
-                securityUserUsername,
-                "",
-                securityUserAuthorities
-                        .stream()
-                        .map(authority -> new SimpleGrantedAuthority(authority))
-                        .toList()
-        );
+                SecurityUser securityUser = memberService.getUserFromAccessToken(accessToken);
 
-        SecurityContextHolder.getContext().setAuthentication(securityUser.genAuthentication());
+                rq.setLogin(securityUser);
+            }
+        } else {
+            String accessToken = rq.getCookieValue("accessToken", "");
+
+            if (!accessToken.isBlank()) {
+                if (!memberService.validateToken(accessToken)) {
+                    String refreshToken = rq.getCookieValue("refreshToken", "");
+
+                    RsData<String> rs = memberService.refreshAccessToken(refreshToken);
+                    accessToken = rs.getData();
+                    rq.setCrossDomainCookie("accessToken", accessToken);
+                }
+
+                SecurityUser securityUser = memberService.getUserFromAccessToken(accessToken);
+
+                rq.setLogin(securityUser);
+            }
+        }
 
         filterChain.doFilter(request, response);
     }
