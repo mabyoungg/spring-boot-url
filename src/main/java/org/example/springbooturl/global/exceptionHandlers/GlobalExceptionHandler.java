@@ -6,6 +6,7 @@ import org.example.springbooturl.global.exception.GlobalException;
 import org.example.springbooturl.global.rq.Rq;
 import org.example.springbooturl.global.rsData.RsData;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,12 +37,18 @@ public class GlobalExceptionHandler {
     private ResponseEntity<Object> handleApiException(Exception ex) {
         Map<String, Object> body = new LinkedHashMap<>();
 
+        int statusCode;
+
         if (ex instanceof AccessDeniedException) {
-            body.put("resultCode", "403-1");
-            body.put("statusCode", 403);
+            statusCode = 403;
+
+            body.put("resultCode", statusCode + "-1");
+            body.put("statusCode", statusCode);
         } else {
-            body.put("resultCode", "500-1");
-            body.put("statusCode", 500);
+            statusCode = 500;
+
+            body.put("resultCode", statusCode + "-1");
+            body.put("statusCode", statusCode);
         }
         body.put("msg", ex.getLocalizedMessage());
 
@@ -59,7 +66,7 @@ public class GlobalExceptionHandler {
         body.put("success", false);
         body.put("fail", true);
 
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(body, HttpStatusCode.valueOf(statusCode));
     }
 
     // 개발자가 명시적으로 발생시킨 예외처리
