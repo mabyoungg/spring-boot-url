@@ -48,7 +48,8 @@
                     body: JSON.stringify({
                         username: form.username.value,
                         password: form.password.value
-                    })
+                    }),
+                    credentials: "include"
                 });
 
                 const data = await response.json();
@@ -68,13 +69,13 @@
                 const response = await fetch("http://localhost:8090/api/v1/surls", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        Authorization: "Bearer user2 EMPTY"
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
                         title: form.title.value,
                         url: form.url.value
-                    })
+                    }),
+                    credentials: "include"
                 });
 
                 const data = await response.json();
