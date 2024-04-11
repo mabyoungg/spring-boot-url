@@ -19,7 +19,8 @@
                 const response = await fetch("http://localhost:8090/api/v1/surls", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        Authorization: "Bearer user2 EMPTY"
                     },
                     body: JSON.stringify({
                         title: form.title.value,
