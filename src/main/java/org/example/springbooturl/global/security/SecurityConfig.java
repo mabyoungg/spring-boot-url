@@ -25,10 +25,8 @@ public class SecurityConfig {
                                 .permitAll()
                                 .requestMatchers("/h2-console/**")
                                 .permitAll()
-                                .requestMatchers("/api/v1/members/login")
-                                .permitAll()
                                 .anyRequest()
-                                .authenticated()
+                                .permitAll()
                 )
                 .headers(
                         headers ->
