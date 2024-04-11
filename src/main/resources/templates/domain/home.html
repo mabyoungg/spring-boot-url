@@ -11,6 +11,10 @@
         <input type="submit" value="줄이기">
     </form>
 
+    <hr>
+
+    <div id="shorten-url-rs"></div>
+
     <script>
         console.clear();
 
@@ -33,6 +37,10 @@
                 if (!response.ok) throw data;
 
                 console.log(data);
+
+                document.querySelector(
+                    "#shorten-url-rs"
+                ).innerHTML = `<a href="${data.data.shortUrl}" target="_blank">${data.data.title}</a>`;
             } catch (error) {
                 console.error("form submission failed:", error);
             }

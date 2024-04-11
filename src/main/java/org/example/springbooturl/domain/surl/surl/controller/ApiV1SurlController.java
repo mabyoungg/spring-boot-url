@@ -27,7 +27,7 @@ public class ApiV1SurlController {
     public record SurlCreateReqBody(@NotBlank String url, String title) {
     }
 
-    public record SurlCreateRespBody(String shortUrl) {
+    public record SurlCreateRespBody(String shortUrl, String title) {
     }
 
     @PostMapping("")
@@ -38,7 +38,7 @@ public class ApiV1SurlController {
     ) {
         Surl surl = surlService.create(rq.getMember(), reqBody.url, reqBody.title);
 
-        return RsData.of(new SurlCreateRespBody(surl.getShortUrl()));}
+        return RsData.of(new SurlCreateRespBody(surl.getShortUrl(), surl.getTitle()));}
 
     @Data
     public static class SurlModifyReqBody {
