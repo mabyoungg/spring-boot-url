@@ -3,6 +3,8 @@ package org.example.springbooturl.global.initData;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.springbooturl.domain.chat.chat.entity.ChatRoom;
+import org.example.springbooturl.domain.chat.chat.service.ChatService;
 import org.example.springbooturl.domain.member.member.entity.Member;
 import org.example.springbooturl.domain.member.member.service.MemberService;
 import org.example.springbooturl.domain.surl.surl.service.SurlService;
@@ -23,6 +25,7 @@ public class NotProd {
     private NotProd self;
     private final SurlService surlService;
     private final MemberService memberService;
+    private final ChatService chatService;
 
     @Bean
     public ApplicationRunner initNotProd() {
@@ -56,5 +59,53 @@ public class NotProd {
         surlService.create(memberUser1, "https://www.naver.com", "네이버");
         surlService.create(memberUser1, "https://www.google.com", "구글");
         surlService.create(memberUser2, "https://www.daum.net", "다음");
+
+        ChatRoom room1 = chatService.createRoom(memberUser1, "room1");
+        ChatRoom room2 = chatService.createRoom(memberUser2, "room2");
+        ChatRoom room3 = chatService.createRoom(memberUser3, "room3");
+
+        chatService.writeMessage(room1, memberUser1, "message1");
+        chatService.writeMessage(room1, memberUser1, "message2");
+        chatService.writeMessage(room1, memberUser1, "message3");
+
+        chatService.writeMessage(room1, memberUser2, "message4");
+        chatService.writeMessage(room1, memberUser2, "message5");
+
+        chatService.writeMessage(room1, memberUser3, "message6");
+
+        chatService.writeMessage(room2, memberUser1, "message7");
+        chatService.writeMessage(room2, memberUser2, "message8");
+
+        chatService.writeMessage(room3, memberUser1, "message9");
+
+        ChatRoom room4 = chatService.createRoom(memberUser1, "room4");
+        ChatRoom room5 = chatService.createRoom(memberUser2, "room5");
+        ChatRoom room6 = chatService.createRoom(memberUser3, "room6");
+
+        ChatRoom room7 = chatService.createRoom(memberUser1, "room7");
+        ChatRoom room8 = chatService.createRoom(memberUser2, "room8");
+        ChatRoom room9 = chatService.createRoom(memberUser3, "room9");
+
+        ChatRoom room10 = chatService.createRoom(memberUser1, "room10");
+        ChatRoom room11 = chatService.createRoom(memberUser2, "room11");
+        ChatRoom room12 = chatService.createRoom(memberUser3, "room12");
+
+        ChatRoom room13 = chatService.createRoom(memberUser1, "room13");
+        ChatRoom room14 = chatService.createRoom(memberUser2, "room14");
+        ChatRoom room15 = chatService.createRoom(memberUser3, "room15");
+
+        chatService.writeMessage(room13, memberUser1, "message10");
+        chatService.writeMessage(room13, memberUser1, "message11");
+        chatService.writeMessage(room13, memberUser1, "message12");
+
+        chatService.writeMessage(room13, memberUser2, "message13");
+        chatService.writeMessage(room13, memberUser2, "message14");
+
+        chatService.writeMessage(room13, memberUser3, "message15");
+
+        chatService.writeMessage(room14, memberUser1, "message16");
+        chatService.writeMessage(room14, memberUser2, "message17");
+
+        chatService.writeMessage(room15, memberUser1, "message18");
     }
 }

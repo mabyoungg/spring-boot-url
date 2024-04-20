@@ -11,4 +11,9 @@ public class HomeController {
     public String home() {
         return "domain/home";
     }
+
+    @GetMapping("/chat")
+    public String chat() {
+        return "domain/chat";
+    }
 }

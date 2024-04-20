@@ -94,4 +94,7 @@ public class AppConfig {
     public void setGenFileDirPath(String genFileDirPath) {
         this.genFileDirPath = genFileDirPath;
     }
+
+    @Getter
+    public static int basePageSize = 10;
 }

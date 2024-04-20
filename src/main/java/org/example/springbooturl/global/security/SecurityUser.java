@@ -17,6 +17,11 @@ public class SecurityUser extends User {
         this.id = id;
     }
 
+    public SecurityUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.id = id;
+    }
+
     public Authentication genAuthentication() {
         Authentication auth = new UsernamePasswordAuthenticationToken(
                 this,
