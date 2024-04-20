@@ -31,6 +31,12 @@ spring:
     user:
       name: user1
       password: 1234
+  kafka:
+    bootstrap-servers: localhost:19092
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
 logging:
   level:
     org.example.springbooturl: DEBUG
@@ -56,3 +62,6 @@ custom:
     dirPath: c:/temp/surl_dev/temp
   genFile:
     dirPath: c:/temp/surl_dev
+  meilisearch:
+    host: "http://localhost:7700"
+    apiKey: "masterKey"

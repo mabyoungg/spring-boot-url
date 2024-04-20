@@ -55,6 +55,11 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
+
+    implementation 'org.springframework.kafka:spring-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+
+    implementation 'com.meilisearch.sdk:meilisearch-java:0.11.8'
 }
 
 tasks.named('test') {
