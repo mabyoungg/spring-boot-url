@@ -8,6 +8,7 @@ import org.example.springbooturl.domain.chat.chat.service.ChatService;
 import org.example.springbooturl.domain.member.member.entity.Member;
 import org.example.springbooturl.domain.member.member.service.MemberService;
 import org.example.springbooturl.domain.surl.surl.service.SurlService;
+import org.example.springbooturl.domain.surl.surlDocument.service.SurlDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ public class NotProd {
     private final SurlService surlService;
     private final MemberService memberService;
     private final ChatService chatService;
+    private final SurlDocumentService surlDocumentService;
 
     @Bean
     public ApplicationRunner initNotProd() {
@@ -38,6 +40,8 @@ public class NotProd {
 
     @Transactional
     public void work1() {
+        surlDocumentService.clear();
+
         Member memberSystem = memberService.create("system", "1234", "system");
         memberSystem.setRefreshToken("system");
 

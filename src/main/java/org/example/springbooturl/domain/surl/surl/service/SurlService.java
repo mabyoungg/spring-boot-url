@@ -3,8 +3,10 @@ package org.example.springbooturl.domain.surl.surl.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.springbooturl.domain.member.member.entity.Member;
+import org.example.springbooturl.domain.surl.surl.dto.SurlDto;
 import org.example.springbooturl.domain.surl.surl.entity.Surl;
 import org.example.springbooturl.domain.surl.surl.repository.SurlRepository;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +16,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SurlService {
-
     private final SurlRepository surlRepository;
+    private final KafkaTemplate<Object, Object> template;
 
     public long count() {
         return surlRepository.count();
@@ -27,9 +29,12 @@ public class SurlService {
                 .author(author)
                 .url(url)
                 .title(title)
+                .body(url)
                 .build();
 
         surlRepository.save(surl);
+
+        template.send("AfterSurlCreatedEvent", new SurlDto(surl));
 
         return surl;
     }
@@ -42,5 +47,8 @@ public class SurlService {
     public void modify(long id, String title) {
         Surl surl = surlRepository.findById(id).get();
         surl.setTitle(title);
+        surl.setModified();
+
+        template.send("AfterSurlModifiedEvent", new SurlDto(surl));
     }
 }

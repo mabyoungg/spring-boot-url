@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.springbooturl.domain.standard.dto.Empty;
+import org.example.springbooturl.standard.dto.Empty;
 import org.springframework.lang.NonNull;
 
 import static lombok.AccessLevel.PRIVATE;

@@ -1,7 +1,7 @@
 package org.example.springbooturl.global.exceptionHandlers;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springbooturl.domain.standard.dto.Empty;
+import org.example.springbooturl.standard.dto.Empty;
 import org.example.springbooturl.global.exception.GlobalException;
 import org.example.springbooturl.global.rq.Rq;
 import org.example.springbooturl.global.rsData.RsData;

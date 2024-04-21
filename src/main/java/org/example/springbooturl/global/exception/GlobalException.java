@@ -1,7 +1,7 @@
 package org.example.springbooturl.global.exception;
 
 import lombok.Getter;
-import org.example.springbooturl.domain.standard.dto.Empty;
+import org.example.springbooturl.standard.dto.Empty;
 import org.example.springbooturl.global.rsData.RsData;
 
 @Getter

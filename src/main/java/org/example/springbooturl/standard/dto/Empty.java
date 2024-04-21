@@ -1,4 +1,4 @@
-package org.example.springbooturl.domain.standard.dto;
+package org.example.springbooturl.standard.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

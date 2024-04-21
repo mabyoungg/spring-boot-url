@@ -20,6 +20,7 @@ public class Surl extends BaseTime {
     private Member author;
     private String url;
     private String title;
+    private String body;
 
     public String getShortUrl() {
         return AppConfig.getSiteBackUrl() + "/" + getId();

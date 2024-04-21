@@ -1,7 +1,7 @@
 package org.example.springbooturl.global.security;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springbooturl.domain.standard.util.ut.Ut;
+import org.example.springbooturl.standard.util.ut.Ut;
 import org.example.springbooturl.global.rsData.RsData;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
