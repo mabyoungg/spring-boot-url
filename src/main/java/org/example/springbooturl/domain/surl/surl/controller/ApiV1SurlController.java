@@ -12,6 +12,7 @@ import org.example.springbooturl.domain.surl.surl.service.SurlService;
 import org.example.springbooturl.domain.surl.surlDocument.document.SurlDocument;
 import org.example.springbooturl.domain.surl.surlDocument.service.SurlDocumentService;
 import org.example.springbooturl.global.app.AppConfig;
+import org.example.springbooturl.global.exception.GlobalException;
 import org.example.springbooturl.global.rq.Rq;
 import org.example.springbooturl.global.rsData.RsData;
 import org.example.springbooturl.standard.base.KwTypeV1;
@@ -59,6 +60,21 @@ public class ApiV1SurlController {
                 new GetSurlsResponseBody(
                         new PageDto<>(_itemPage)
                 )
+        );
+    }
+
+    public record GetSurlResponseBody(@NonNull SurlDto item) {
+    }
+
+    @GetMapping("/{id}")
+    public RsData<GetSurlResponseBody> getPost(
+            @PathVariable long id
+    ) {
+        SurlDocument surlDocument = surlDocumentService.findById(id).orElseThrow(GlobalException.E404::new);
+        SurlDto dto = new SurlDto(surlDocument);
+
+        return RsData.of(
+                new GetSurlResponseBody(dto)
         );
     }
 
