@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.springbooturl.domain.surl.surl.entity.Surl;
+import org.example.springbooturl.domain.surl.surlDocument.document.SurlDocument;
 import org.springframework.lang.NonNull;
 
 import java.time.LocalDateTime;
@@ -35,5 +36,15 @@ public class SurlDto {
         this.url = surl.getUrl();
         this.title = surl.getTitle();
         this.body = surl.getBody();
+    }
+
+    public SurlDto(SurlDocument surlDocument) {
+        this.id = surlDocument.getId();
+        this.createDate = surlDocument.getCreateDate();
+        this.modifyDate = surlDocument.getModifyDate();
+        this.authorId = surlDocument.getAuthorId();
+        this.url = surlDocument.getUrl();
+        this.title = surlDocument.getTitle();
+        this.body = surlDocument.getBody();
     }
 }

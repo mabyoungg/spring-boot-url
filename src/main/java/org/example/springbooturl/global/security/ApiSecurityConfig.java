@@ -24,7 +24,7 @@ public class ApiSecurityConfig {
                 .securityMatcher("/api/**")
                 .authorizeRequests(
                         authorizeRequests -> authorizeRequests
-                                .requestMatchers(HttpMethod.GET, "/api/*/posts/{id:\\d+}", "/api/*/posts", "/api/*/postComments/{id:\\d+}")
+                                .requestMatchers(HttpMethod.GET, "/api/*/surls/{id:\\d+}", "/api/*/surls", "/api/*/surlComments/{id:\\d+}")
                                 .permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/*/chatRooms/{id:\\d+}", "/api/*/chatRooms", "/api/*/chatMessages/{id:\\d+}")
                                 .permitAll()
