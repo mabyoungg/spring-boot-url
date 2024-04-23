@@ -10,7 +10,6 @@ import org.example.springbooturl.domain.member.member.service.MemberService;
 import org.example.springbooturl.domain.surl.surl.entity.Surl;
 import org.example.springbooturl.domain.surl.surl.service.SurlService;
 import org.example.springbooturl.domain.surl.surlDocument.service.SurlDocumentService;
-import org.example.springbooturl.standard.util.ut.Ut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -67,11 +66,11 @@ public class NotProd {
         Surl surl3 = surlService.create(memberUser2, "https://www.daum.net", "다음");
 
         Surl surl4 = surlService.create(memberUser2, "https://zum.com", "줌");
-        Ut.thread.sleep(1000); // HTTP 요청이 비동기로 이루어 지기 때문에, 아래 수정작업요청을 위해 1초 대기
+//        Ut.thread.sleep(1000); // HTTP 요청이 비동기로 이루어 지기 때문에, 아래 수정작업요청을 위해 1초 대기
         surlService.modify(surl4, "줌 인터넷");
 
         Surl surl5 = surlService.create(memberUser3, "https://www.youtube.com", "유튜브");
-        Ut.thread.sleep(1000); // HTTP 요청이 비동기로 이루어 지기 때문에, 아래 삭제작업요청을 위해 1초 대기
+//        Ut.thread.sleep(1000); // HTTP 요청이 비동기로 이루어 지기 때문에, 아래 삭제작업요청을 위해 1초 대기
         surlService.delete(surl5);
 
         ChatRoom room1 = chatService.createRoom(memberUser1, "room1");
