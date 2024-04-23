@@ -32,4 +32,15 @@ public class SurlDocumentEventListener {
         String message = new String(in);
         System.out.println("failed message: " + message);
     }
+
+    @KafkaListener(topics = "BeforeSurlDeletedEvent", groupId = "1")
+    public void consumeBeforeSurlDeletedEvent(SurlDto surlDto) {
+        surlDocumentService.delete(surlDto);
+    }
+
+    @KafkaListener(topics = "BeforeSurlDeletedEvent.DLT", groupId = "1")
+    public void consumeBeforeSurlDeletedEventDLT(byte[] in) {
+        String message = new String(in);
+        System.out.println("failed message: " + message);
+    }
 }

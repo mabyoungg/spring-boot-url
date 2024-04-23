@@ -46,6 +46,10 @@ public class SurlDocumentService {
     public void modify(SurlDto surlDto) {
         SurlDocument surlDocument = new SurlDocument(surlDto);
 
-        surlDocumentRepository.save(surlDocument);
+        surlDocumentRepository.update(surlDocument);
+    }
+
+    public void delete(SurlDto surlDto) {
+        surlDocumentRepository.deleteById(surlDto.getId());
     }
 }

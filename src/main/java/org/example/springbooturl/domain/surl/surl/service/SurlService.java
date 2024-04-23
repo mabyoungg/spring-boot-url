@@ -44,11 +44,17 @@ public class SurlService {
     }
 
     @Transactional
-    public void modify(long id, String title) {
-        Surl surl = surlRepository.findById(id).get();
+    public void modify(Surl surl, String title) {
         surl.setTitle(title);
         surl.setModified();
 
         template.send("AfterSurlModifiedEvent", new SurlDto(surl));
+    }
+
+    @Transactional
+    public void delete(Surl surl) {
+        template.send("BeforeSurlDeletedEvent", new SurlDto(surl));
+
+        surlRepository.delete(surl);
     }
 }

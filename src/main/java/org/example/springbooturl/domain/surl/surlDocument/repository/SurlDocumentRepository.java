@@ -5,11 +5,12 @@ import com.meilisearch.sdk.SearchRequest;
 import com.meilisearch.sdk.exceptions.MeilisearchException;
 import com.meilisearch.sdk.model.SearchResult;
 import com.meilisearch.sdk.model.Searchable;
+import com.meilisearch.sdk.model.TaskInfo;
 import lombok.RequiredArgsConstructor;
-import org.example.springbooturl.standard.util.ut.Ut;
 import org.example.springbooturl.domain.surl.surlDocument.document.SurlDocument;
 import org.example.springbooturl.global.app.AppConfig;
 import org.example.springbooturl.global.meilisearch.MeilisearchConfig;
+import org.example.springbooturl.standard.util.ut.Ut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -47,15 +48,8 @@ public class SurlDocumentRepository {
     }
 
     public void clear() {
-//        getIndex().addDocuments(
-//                """
-//                        {
-//                            "id": 1
-//                        }
-//                        """
-//        );
-        getIndex().deleteAllDocuments();
-        getIndex().resetSortableAttributesSettings();
+        meilisearchConfig.meilisearchClient().deleteIndex(getIndexName());
+        meilisearchConfig.meilisearchClient().createIndex(getIndexName(), "id");
         getIndex().updateSortableAttributesSettings(new String[]{"id"});
         getIndex().updateFilterableAttributesSettings(new String[]{"createTimeStamp"});
     }
@@ -124,5 +118,16 @@ public class SurlDocumentRepository {
                 .toList();
 
         return new PageImpl<>(surlDocuments, pageable, searchResult.getEstimatedTotalHits());
+    }
+
+    public void deleteById(long id) {
+        getIndex().deleteDocument(String.valueOf(id));
+    }
+
+    public void update(SurlDocument surlDocument) {
+        TaskInfo id = getIndex().updateDocuments(
+                Ut.json.toString(surlDocument),
+                "id"
+        );
     }
 }
